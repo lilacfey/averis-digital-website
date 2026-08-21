@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Averis Digital OÜ</title>
+<meta name="description" content="Have a project, challenge or idea you'd like to discuss? Tell us a little about what you're working on and we'll get back to you.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact — Averis Digital OÜ">
+<meta property="og:description" content="Have a project, challenge or idea you'd like to discuss? Tell us a little about what you're working on and we'll get back to you.">
+<meta property="og:image" content="assets/logo/averis-mark-512.png">
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/logo/favicon-64.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="hdr-inner">
+    <a class="hdr-logo" href="index.html">
+      <img src="assets/logo/averis-horizontal-1200.png"
+           srcset="assets/logo/averis-horizontal-1200.png 1x, assets/logo/averis-horizontal-2400.png 2x"
+           alt="Averis Digital OÜ" height="36" width="169">
+    </a>
+    <nav class="hdr-nav" aria-label="Primary">
+      <ul class="hdr-nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" aria-current="page">Contact</a></li>
+      </ul>
+      <a class="btn btn-primary hdr-cta" href="contact.html">Let's Talk</a>
+    </nav>
+    <button class="hdr-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="mob-menu" id="mobile-menu" hidden>
+    <ul class="mob-menu-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" aria-current="page">Contact</a></li>
+    </ul>
+    <div class="mob-menu-cta-wrap">
+      <a class="mob-menu-cta" href="contact.html">Let's Talk</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 1. Hero -->
+  <section class="hero hero-contact">
+    <img class="hero-img" src="assets/img/hero-contact-2400.jpg"
+         srcset="assets/img/hero-contact-800.webp 800w, assets/img/hero-contact-1400.webp 1400w, assets/img/hero-contact-2400.webp 2400w"
+         sizes="100vw"
+         alt="Office" width="2400" height="900" fetchpriority="high">
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-content-inner">
+        <p class="eyebrow eyebrow-soft">Contact</p>
+        <h1 class="h1-hero">Let's talk.</h1>
+        <p class="hero-p">Have a project, challenge or idea you'd like to discuss? Tell us a little about what you're working on and we'll get back to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Form + info -->
+  <section class="contact-body">
+    <div class="container">
+      <div class="contact-grid">
+
+        <div class="form-panel">
+          <h2>Send an enquiry</h2>
+
+          <div class="form-error-banner" role="alert"></div>
+
+          <form id="enquiry-form" novalidate>
+            <div class="hp-field" aria-hidden="true">
+              <label for="company_website">Leave this field empty</label>
+              <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="field-name">Name</label>
+                <input type="text" id="field-name" name="name" placeholder="Your full name" autocomplete="name" required>
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="field-email">Email</label>
+                <input type="email" id="field-email" name="email" placeholder="you@company.com" autocomplete="email" required>
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="field-company">Company</label>
+                <input type="text" id="field-company" name="company" placeholder="Company name" autocomplete="organization">
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="field-topic">What can we help with?</label>
+                <select id="field-topic" name="topic">
+                  <option value="">Select an area</option>
+                  <option value="Business Development">Business Development</option>
+                  <option value="Web & Digital Development">Web &amp; Digital Development</option>
+                  <option value="Team Development">Team Development</option>
+                  <option value="Business & Project Consulting">Business &amp; Project Consulting</option>
+                  <option value="Something else">Something else</option>
+                </select>
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="field field-row-message">
+              <label for="field-message">Message</label>
+              <textarea id="field-message" name="message" rows="6" placeholder="Tell us a little about your project or challenge" required></textarea>
+              <p class="field-error" role="alert"></p>
+            </div>
+
+            <button type="submit" class="btn-submit">Send Enquiry</button>
+            <p class="form-helper">Enquiries are sent straight into our CRM so nothing gets missed. We typically reply within one working day.</p>
+            <p class="form-privacy">We'll only use your details to respond to your enquiry.</p>
+          </form>
+
+          <div class="form-success">
+            <div class="success-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true" stroke="#1A5FE0" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <polyline points="5 13 10 18 19 7"/>
+              </svg>
+            </div>
+            <h2>Thank you — enquiry received.</h2>
+            <p>Your message has been logged in our CRM and we'll be in touch shortly.</p>
+            <a class="link-more" href="#">Send another enquiry</a>
+          </div>
+        </div>
+
+        <div class="info-panel">
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3.5 7 12 13 20.5 7"/></svg>
+            <div>
+              <p class="info-label">Email</p>
+              <p class="info-value"><a href="mailto:hello@averisdigital.com">hello@averisdigital.com</a></p>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <div>
+              <p class="info-label">Location</p>
+              <p class="info-value muted">Tallinn, Estonia — working internationally</p>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>
+            <div>
+              <p class="info-label">Response time</p>
+              <p class="info-value muted">Within one working day</p>
+            </div>
+          </div>
+          <div class="info-row info-row-last">
+            <div>
+              <h3>Not sure where to start?</h3>
+              <p>That's fine — a short conversation is usually enough to work out whether we can help and what the best next step looks like.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <img src="assets/logo/averis-mark-256.png" alt="" width="44" height="44" loading="lazy">
+      <p>Averis Digital OÜ — business consulting and digital services, helping businesses develop, improve and execute.</p>
+    </div>
+    <div>
+      <p class="foot-label">Pages</p>
+      <ul class="foot-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-label">Services</p>
+      <ul class="foot-list">
+        <li><span>Business Development</span></li>
+        <li><span>Web &amp; Digital Development</span></li>
+        <li><span>Team Development</span></li>
+        <li><span>Business &amp; Project Consulting</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-legal">
+    <span>© 2026 Averis Digital OÜ. All rights reserved.</span>
+    <span>Registered in Estonia</span>
+  </div>
+</footer>
+
+<script src="js/main.js" defer></script>
+<script src="js/enquiry.js" defer></script>
+</body>
+</html>
