@@ -3,6 +3,9 @@
 
   var ENQUIRY_ENDPOINT = '/api/enquiry.php';
   var FALLBACK_EMAIL = 'hello@averisdigital.net';
+  var PREVIEW_MESSAGE = 'Preview only — the enquiry form activates when the website launches.';
+  var environment = window.AverisEnquiryEnvironment;
+  var isPreview = environment && environment.isPreviewHost(window.location.hostname);
 
   var HONEYPOT_FIELD = 'company_website';
   var MIN_SUBMIT_MS = 2000;
@@ -92,10 +95,17 @@
     return valid;
   }
 
-  function showError(message) {
+  function showError(message, includeFallback) {
     if (!errorBanner) return;
-    errorBanner.innerHTML = message + ' You can also email us directly at ' +
-      '<a href="mailto:' + FALLBACK_EMAIL + '">' + FALLBACK_EMAIL + '</a>.';
+    errorBanner.textContent = message;
+    if (includeFallback !== false) {
+      errorBanner.appendChild(document.createTextNode(' You can also email us directly at '));
+      var emailLink = document.createElement('a');
+      emailLink.href = 'mailto:' + FALLBACK_EMAIL;
+      emailLink.textContent = FALLBACK_EMAIL;
+      errorBanner.appendChild(emailLink);
+      errorBanner.appendChild(document.createTextNode('.'));
+    }
     errorBanner.classList.add('visible');
   }
 
@@ -146,6 +156,11 @@
       return;
     }
     if (!validate()) return;
+
+    if (isPreview) {
+      showError(PREVIEW_MESSAGE, false);
+      return;
+    }
 
     var payload = {
       name: fields.name.value.trim(),

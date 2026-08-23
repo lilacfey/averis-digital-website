@@ -16,3 +16,27 @@ test('all visitor-facing contact addresses use averisdigital.net', () => {
   assert.match(read('contact.html'), /mailto:hello@averisdigital\.net/);
   assert.match(read('js/enquiry.js'), /FALLBACK_EMAIL = 'hello@averisdigital\.net'/);
 });
+
+test('only the approved GitHub Pages host is preview mode', () => {
+  const environment = require('../js/enquiry-environment.js');
+  assert.equal(environment.isPreviewHost('lilacfey.github.io'), true);
+  assert.equal(environment.isPreviewHost('averisdigital.net'), false);
+  assert.equal(environment.isPreviewHost('www.averisdigital.net'), false);
+  assert.equal(environment.isPreviewHost('localhost'), false);
+});
+
+test('contact page loads environment detection before enquiry handling', () => {
+  const contact = read('contact.html');
+  assert.ok(
+    contact.indexOf('js/enquiry-environment.js') < contact.indexOf('js/enquiry.js'),
+    'environment helper must load before enquiry.js'
+  );
+});
+
+test('preview branch stops before the enquiry network request', () => {
+  const enquiry = read('js/enquiry.js');
+  const previewBranch = enquiry.indexOf('if (isPreview)');
+  const request = enquiry.lastIndexOf('submitEnquiry(payload)');
+  assert.ok(previewBranch >= 0 && request > previewBranch);
+  assert.match(enquiry, /Preview only — the enquiry form activates when the website launches\./);
+});
