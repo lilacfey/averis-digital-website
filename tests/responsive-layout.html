@@ -203,6 +203,15 @@
           return Math.abs(innerWidth - button.getBoundingClientRect().width) <= 1;
         }
       },
+      ...[320, 1440].map(width => ({
+        name: `Coming Soon page fits its ${width}px viewport`,
+        page: '../coming-soon/index.html',
+        width,
+        run(doc) {
+          return doc.documentElement.scrollWidth <= doc.documentElement.clientWidth &&
+            doc.querySelector('.coming-card').getBoundingClientRect().width <= width;
+        }
+      })),
       ...['../index.html', '../about.html', '../contact.html'].flatMap(page =>
         [320, 640, 641, 1120, 1121].map(width => ({
           name: `${page} has no horizontal overflow at ${width}px`,

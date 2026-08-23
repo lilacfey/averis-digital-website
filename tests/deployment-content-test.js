@@ -40,3 +40,13 @@ test('preview branch stops before the enquiry network request', () => {
   assert.ok(previewBranch >= 0 && request > previewBranch);
   assert.match(enquiry, /Preview only — the enquiry form activates when the website launches\./);
 });
+
+test('Coming Soon page is self-contained and uses approved copy', () => {
+  const page = read('coming-soon/index.html');
+  assert.match(page, /Something valuable is taking shape\./);
+  assert.match(page, /Our new website is coming soon\./);
+  assert.match(page, /mailto:hello@averisdigital\.net/);
+  assert.match(page, /src="averis-horizontal-1200\.png"/);
+  assert.match(page, /href="styles\.css"/);
+  assert.doesNotMatch(page, /\.\.\//);
+});
