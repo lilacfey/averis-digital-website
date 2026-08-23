@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Responsive layout checks</title>
+</head>
+<body data-status="running">
+  <h1>Responsive layout checks</h1>
+  <ol id="results"></ol>
+  <script>
+    const checks = [
+      {
+        name: 'home mobile sections share the hero gutter',
+        page: '../index.html',
+        width: 375,
+        run(doc) {
+          return aligned(doc.querySelector('.hero-content-inner > *'), doc.querySelector('.band .container > *'));
+        }
+      },
+      {
+        name: 'about tablet sections share the hero gutter',
+        page: '../about.html',
+        width: 768,
+        run(doc) {
+          return aligned(doc.querySelector('.hero-content-inner > *'), doc.querySelector('.band .container > *'));
+        }
+      },
+      {
+        name: 'contact desktop content shares the hero gutter',
+        page: '../contact.html',
+        width: 1200,
+        run(doc) {
+          return aligned(doc.querySelector('.hero-content-inner > *'), doc.querySelector('.contact-grid'));
+        }
+      },
+      {
+        name: 'desktop content uses the narrower shared centre line',
+        page: '../index.html',
+        width: 1440,
+        run(doc) {
+          const hero = doc.querySelector('.hero-content-inner > *');
+          const section = doc.querySelector('.band .container > *');
+          const header = doc.querySelector('.hdr-logo');
+          const footer = doc.querySelector('.foot-brand');
+          return section.getBoundingClientRect().left >= 180 &&
+            aligned(hero, section) && aligned(header, section) && aligned(footer, section);
+        }
+      },
+      {
+        name: 'View Services keeps white text on its glass interaction state',
+        page: '../index.html',
+        width: 1200,
+        run(doc) {
+          const link = doc.querySelector('.btn-hero-secondary');
+          link.focus();
+          const style = doc.defaultView.getComputedStyle(link);
+          const backdrop = style.backdropFilter || style.webkitBackdropFilter;
+          return style.color === 'rgb(255, 255, 255)' &&
+            style.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+            backdrop && backdrop !== 'none';
+        }
+      },
+      {
+        name: 'Execution is emphasized with the primary brand blue',
+        page: '../index.html',
+        width: 1200,
+        run(doc) {
+          const emphasis = doc.querySelector('.execution-emphasis');
+          return emphasis && emphasis.textContent.trim() === 'Execution' &&
+            doc.defaultView.getComputedStyle(emphasis).color === 'rgb(26, 95, 224)';
+        }
+      },
+      ...[
+        { width: 1440, minimumGap: 50 },
+        { width: 960, minimumGap: 50 },
+        { width: 375, minimumGap: 38 }
+      ].map(({ width, minimumGap }) => ({
+        name: `home eyebrow stays elevated above the headline at ${width}px`,
+        page: '../index.html',
+        width,
+        run(doc) {
+          const eyebrow = doc.querySelector('.hero-home-eyebrow').getBoundingClientRect();
+          const headline = doc.querySelector('.h1-hero').getBoundingClientRect();
+          return headline.top - eyebrow.bottom >= minimumGap;
+        }
+      })),
+      ...[1440, 960, 375].map(width => ({
+        name: `home hero keeps its lamp-safe top image anchor at ${width}px`,
+        page: '../index.html',
+        width,
+        run(doc) {
+          const image = doc.querySelector('.hero-home .hero-img');
+          return doc.defaultView.getComputedStyle(image).objectPosition === '50% 0%';
+        }
+      })),
+      {
+        name: 'service cards use two columns on tablet',
+        page: '../index.html',
+        width: 960,
+        run(doc) {
+          return columnCount(doc.querySelector('.card-grid')) === 2;
+        }
+      },
+      {
+        name: 'process steps use two columns on tablet',
+        page: '../index.html',
+        width: 960,
+        run(doc) {
+          return columnCount(doc.querySelector('.steps-grid')) === 2;
+        }
+      },
+      {
+        name: 'contact fields use one column on mobile',
+        page: '../contact.html',
+        width: 640,
+        run(doc) {
+          return columnCount(doc.querySelector('.field-row')) === 1;
+        }
+      },
+      ...[
+        { width: 1121, columns: 4 },
+        { width: 1120, columns: 2 },
+        { width: 641, columns: 2 },
+        { width: 640, columns: 1 }
+      ].flatMap(({ width, columns }) => [
+        {
+          name: `home grids use ${columns} column(s) at ${width}px`,
+          page: '../index.html',
+          width,
+          run(doc) {
+            return columnCount(doc.querySelector('.card-grid')) === columns &&
+              columnCount(doc.querySelector('.steps-grid')) === columns;
+          }
+        },
+        {
+          name: `About approach uses ${columns} column(s) at ${width}px`,
+          page: '../about.html',
+          width,
+          run(doc) {
+            return columnCount(doc.querySelector('.card-grid')) === columns;
+          }
+        }
+      ]),
+      {
+        name: 'About intro sentences have visible paragraph breaks',
+        page: '../about.html',
+        width: 1200,
+        run(doc) {
+          const paragraphs = [...doc.querySelectorAll('.about-copy > p')];
+          if (paragraphs.length !== 3) return false;
+          return paragraphs.slice(1).every((paragraph, index) =>
+            paragraph.getBoundingClientRect().top - paragraphs[index].getBoundingClientRect().bottom >= 16
+          );
+        }
+      },
+      {
+        name: 'company facts render as a branded credential card',
+        page: '../about.html',
+        width: 1200,
+        run(doc) {
+          const panel = doc.querySelector('.facts-panel');
+          const logo = panel.querySelector('img');
+          const style = doc.defaultView.getComputedStyle(panel);
+          return style.backgroundImage !== 'none' &&
+            style.borderTopColor === 'rgb(26, 95, 224)' &&
+            parseFloat(style.borderTopWidth) >= 3 &&
+            logo.getBoundingClientRect().width >= 56;
+        }
+      },
+      {
+        name: 'contact topic placeholder is blue while selections use ink',
+        page: '../contact.html',
+        width: 1200,
+        run(doc) {
+          const select = doc.querySelector('#field-topic');
+          const initialColor = doc.defaultView.getComputedStyle(select).color;
+          select.value = 'Business Development';
+          const selectedColor = doc.defaultView.getComputedStyle(select).color;
+          return initialColor === 'rgb(26, 95, 224)' && selectedColor === 'rgb(10, 22, 40)';
+        }
+      },
+      {
+        name: 'about CTA button fills its mobile row',
+        page: '../about.html',
+        width: 375,
+        run(doc) {
+          const row = doc.querySelector('.cta-dark-inner');
+          const button = doc.querySelector('.btn-cta-dark');
+          const rowStyle = doc.defaultView.getComputedStyle(row);
+          const innerWidth = row.clientWidth - parseFloat(rowStyle.paddingLeft) - parseFloat(rowStyle.paddingRight);
+          return Math.abs(innerWidth - button.getBoundingClientRect().width) <= 1;
+        }
+      },
+      {
+        name: 'home CTA button fills its mobile row',
+        page: '../index.html',
+        width: 375,
+        run(doc) {
+          const row = doc.querySelector('.cta-panel');
+          const button = doc.querySelector('.btn-cta-panel');
+          const rowStyle = doc.defaultView.getComputedStyle(row);
+          const innerWidth = row.clientWidth - parseFloat(rowStyle.paddingLeft) - parseFloat(rowStyle.paddingRight);
+          return Math.abs(innerWidth - button.getBoundingClientRect().width) <= 1;
+        }
+      },
+      ...['../index.html', '../about.html', '../contact.html'].flatMap(page =>
+        [320, 640, 641, 1120, 1121].map(width => ({
+          name: `${page} has no horizontal overflow at ${width}px`,
+          page,
+          width,
+          run(doc) {
+            return doc.documentElement.scrollWidth <= doc.documentElement.clientWidth;
+          }
+        }))
+      )
+    ];
+
+    function aligned(first, second) {
+      return Math.abs(first.getBoundingClientRect().left - second.getBoundingClientRect().left) <= 1;
+    }
+
+    function columnCount(grid) {
+      const leftEdges = [...grid.children].map(item => Math.round(item.getBoundingClientRect().left));
+      return new Set(leftEdges).size;
+    }
+
+    function loadFrame(check) {
+      return new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.style.cssText = `display:block;border:0;width:${check.width}px;height:900px`;
+        frame.addEventListener('load', () => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve(frame)));
+        }, { once: true });
+        frame.src = check.page;
+        document.body.appendChild(frame);
+      });
+    }
+
+    (async () => {
+      const results = document.getElementById('results');
+      let failures = 0;
+
+      const frames = await Promise.all(checks.map(loadFrame));
+
+      checks.forEach((check, index) => {
+        const frame = frames[index];
+        let passed = false;
+        let detail = '';
+        try {
+          passed = Boolean(check.run(frame.contentDocument));
+        } catch (error) {
+          detail = `: ${error.message}`;
+        }
+        failures += passed ? 0 : 1;
+        const item = document.createElement('li');
+        item.dataset.result = passed ? 'passed' : 'failed';
+        item.textContent = `${passed ? 'PASS' : 'FAIL'}: ${check.name}${detail}`;
+        results.appendChild(item);
+        frame.remove();
+      });
+
+      document.body.dataset.status = failures === 0 ? 'passed' : 'failed';
+      document.body.dataset.failures = String(failures);
+    })();
+  </script>
+</body>
+</html>

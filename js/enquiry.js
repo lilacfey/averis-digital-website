@@ -1,13 +1,7 @@
 (function () {
   'use strict';
 
-  // TODO(CRM): the client has not chosen a CRM yet (see CRM-INTEGRATION.md).
-  // Recommendation is HubSpot Free CRM via a serverless function that forwards
-  // the validated payload — never call a CRM with a secret key from the browser.
-  // Swap this one constant (and, if needed, the body of submitEnquiry) once the
-  // CRM/hosting decision is made. Until then this endpoint does not exist, so
-  // submissions will hit the network-error path below by design.
-  var ENQUIRY_ENDPOINT = '/api/enquiry';
+  var ENQUIRY_ENDPOINT = '/api/enquiry.php';
   var FALLBACK_EMAIL = 'hello@averisdigital.com';
 
   var HONEYPOT_FIELD = 'company_website';
@@ -159,8 +153,10 @@
       company: fields.company.value.trim() || null,
       topic: fields.topic.value || null,
       message: fields.message.value.trim(),
+      company_website: honeypot ? honeypot.value : '',
       meta: {
         page: 'contact',
+        pageUrl: window.location.href,
         submittedAt: new Date().toISOString(),
         source: 'website',
         userAgent: navigator.userAgent,
