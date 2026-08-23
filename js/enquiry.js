@@ -2,7 +2,7 @@
   'use strict';
 
   var ENQUIRY_ENDPOINT = '/api/enquiry.php';
-  var FALLBACK_EMAIL = 'hello@averisdigital.com';
+  var FALLBACK_EMAIL = 'hello@averisdigital.net';
 
   var HONEYPOT_FIELD = 'company_website';
   var MIN_SUBMIT_MS = 2000;
