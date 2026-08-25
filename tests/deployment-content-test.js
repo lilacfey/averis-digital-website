@@ -25,20 +25,24 @@ test('only the approved GitHub Pages host is preview mode', () => {
   assert.equal(environment.isPreviewHost('localhost'), false);
 });
 
+test('enquiry endpoint stays inside the page directory', () => {
+  const environment = require('../js/enquiry-environment.js');
+  assert.equal(
+    environment.enquiryEndpoint('https://averisdigital.net/contact.html'),
+    'https://averisdigital.net/api/enquiry.php'
+  );
+  assert.equal(
+    environment.enquiryEndpoint('https://averisdigital.net/client-preview/contact.html'),
+    'https://averisdigital.net/client-preview/api/enquiry.php'
+  );
+});
+
 test('contact page loads environment detection before enquiry handling', () => {
   const contact = read('contact.html');
   assert.ok(
     contact.indexOf('js/enquiry-environment.js') < contact.indexOf('js/enquiry.js'),
     'environment helper must load before enquiry.js'
   );
-});
-
-test('preview branch stops before the enquiry network request', () => {
-  const enquiry = read('js/enquiry.js');
-  const previewBranch = enquiry.indexOf('if (isPreview)');
-  const request = enquiry.lastIndexOf('submitEnquiry(payload)');
-  assert.ok(previewBranch >= 0 && request > previewBranch);
-  assert.match(enquiry, /Preview only — the enquiry form activates when the website launches\./);
 });
 
 test('Coming Soon page is self-contained and uses approved copy', () => {
@@ -49,4 +53,11 @@ test('Coming Soon page is self-contained and uses approved copy', () => {
   assert.match(page, /src="averis-horizontal-1200\.png"/);
   assert.match(page, /href="styles\.css"/);
   assert.doesNotMatch(page, /\.\.\//);
+});
+
+test('public crawler rules exclude the protected client preview', () => {
+  assert.equal(
+    read('coming-soon/robots.txt'),
+    'User-agent: *\nDisallow: /client-preview/\n'
+  );
 });

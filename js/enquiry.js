@@ -1,17 +1,22 @@
 (function () {
   'use strict';
 
-  var ENQUIRY_ENDPOINT = '/api/enquiry.php';
   var FALLBACK_EMAIL = 'hello@averisdigital.net';
   var PREVIEW_MESSAGE = 'Preview only — the enquiry form activates when the website launches.';
   var environment = window.AverisEnquiryEnvironment;
-  var isPreview = environment && environment.isPreviewHost(window.location.hostname);
+  var hostname = String(window.location.hostname || '').toLowerCase();
+  var isPreview = hostname === 'lilacfey.github.io' || Boolean(
+    environment && environment.isPreviewHost(hostname)
+  );
+  var enquiryEndpoint = environment && environment.enquiryEndpoint
+    ? environment.enquiryEndpoint(window.location.href)
+    : 'api/enquiry.php';
 
   var HONEYPOT_FIELD = 'company_website';
   var MIN_SUBMIT_MS = 2000;
 
   function submitEnquiry(payload) {
-    return fetch(ENQUIRY_ENDPOINT, {
+    return fetch(enquiryEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)

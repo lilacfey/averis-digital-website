@@ -11,6 +11,9 @@
   return {
     isPreviewHost: function (hostname) {
       return String(hostname || '').toLowerCase() === 'lilacfey.github.io';
+    },
+    enquiryEndpoint: function (pageUrl) {
+      return new URL('api/enquiry.php', pageUrl).href;
     }
   };
 }));
